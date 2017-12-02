@@ -1,0 +1,19 @@
+{
+  "name": "shoutg",
+  "version": "1.0.0",
+  "description": "A little bot for retweeting the gaming community",
+  "main": "app.js",
+  "scripts": {},
+  "repository": "",
+  "author": "Ian",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "twit": "~1.1.11",
+    "express": "~3.4.6",
+    "redis": "^2.8.0"
+  }
+}
