@@ -5,13 +5,13 @@ var twit = new Twitter({
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token: process.env.ACCESS_TOKEN,
     access_token_secret: process.env.ACCESS_TOKEN_SECRET
-});
+});/**
 var twit2 = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY_2,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET_2,
     access_token: process.env.ACCESS_TOKEN_2,
     access_token_secret: process.env.ACCESS_TOKEN_SECRET_2
-});
+});**/
 
 var express = require('express');
 var app = express();
@@ -82,10 +82,10 @@ var pickAccount = function(idStr, screenName) {
   var randy = Math.random();
   if (randy < process.env.RATE) {
     retweetById(idStr, screenName, twit);
-  }
+  }/**
   else {
     retweetById(idStr, screenName, twit2);
-  }
+  }**/
 };
 
 var retweetById = function(idStr, screenName, account) {
@@ -111,9 +111,9 @@ var retweetById = function(idStr, screenName, account) {
     });
     }
     
-    else if (account == twit2) {
+  /**  else if (account == twit2) {
       retweetWithSecond(idStr, screenName);
-    }
+    }**/
     
 };
 
@@ -125,12 +125,12 @@ var retweetWithSecond = function(idStr, screenName) {
         } else if (reply == 1 || screenName == process.env.TWITTER_DEBUG_USER) {
             console.log(' - This is a new user OR it is the debug user');
                       
-                      twit2.post('statuses/retweet/:id', {id: idStr}, function(err, reply) {
+                     /** twit2.post('statuses/retweet/:id', {id: idStr}, function(err, reply) {
                       console.log("2 retweeted id:" + idStr);
                         if (err) {
                           console.log(err);
                         }
-                      });
+                      });**/
                       
         } else {
           //cooldownNotify(screenName);
@@ -159,6 +159,7 @@ var cooldownNotify = function(screenName) {
 **/
 
 
+/**
 var user2Stream = twit2.stream('user', { with: 'user', replies: 'all' });
 
 user2Stream.on('tweet', function(tweet) {
@@ -185,7 +186,7 @@ user2Stream.on('tweet', function(tweet) {
     else {
       console.log(' - mention @2 was a retweet');
     }
-});
+});**/
 
 setInterval(function() {
     client.del(REDIS_KEY);
