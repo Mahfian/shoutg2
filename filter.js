@@ -65,12 +65,13 @@ var derpCheckFriendship = function(tweet, reply, tweep){
         pickAccount(tweet.id_str, tweet.user.screen_name);
       }
       else {
-        var spamAccount = tweet.text.toLowerCase().indexOf('fortnite');
-        if (spamAccount == -1) {
+        var spamFortnite = tweet.text.toLowerCase().indexOf('fortnite');
+        var spamMethod = tweet.text.toLowerCase().indexOf('fortnite');
+        if (spamFortnite == -1 || spamMethod == -1) {
           pickAccount(tweet.id_str, tweet.user.screen_name);
         }
         else {
-          console.log(' - fortnite selling NOPE');
+          console.log(' - fortnite/method selling NOPE');
         }
       }
     /**
