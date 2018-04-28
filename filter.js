@@ -69,7 +69,7 @@ var derpCheckFriendship = function(tweet, reply, tweep){
         var spamMethod = tweet.text.toLowerCase().indexOf('method');
         var spamTwitter = tweet.text.toLowerCase().indexOf('twitter');
         var spamAccount = tweet.text.toLowerCase().indexOf('account');
-        if (spamFortnite == -1 || spamMethod == -1 || spamTwitter == -1 || spamAccount == -1) {
+        if (spamFortnite == -1 || spamMethod == -1 ) {
           pickAccount(tweet.id_str, tweet.user.screen_name);
         }
         else {
