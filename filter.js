@@ -60,12 +60,12 @@ userStream.on('tweet', function(tweet) {
 var derpCheckFriendship = function(tweet, reply, tweep){
 	if (tweet.in_reply_to_user_id == null) {
     if (reply.relationship.target.following == true){
-      var spamSelling = tweet.text.indexOf('selling');
+      var spamSelling = tweet.text.toLowerCase().indexOf('selling');
       if (spamSelling == -1) {
         pickAccount(tweet.id_str, tweet.user.screen_name);
       }
       else {
-        var spamAccount = tweet.text.indexOf('fortnite');
+        var spamAccount = tweet.text.toLowerCase().indexOf('fortnite');
         if (spamAccount == -1) {
           pickAccount(tweet.id_str, tweet.user.screen_name);
         }
