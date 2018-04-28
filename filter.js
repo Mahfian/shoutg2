@@ -65,6 +65,7 @@ var derpCheckFriendship = function(tweet, reply, tweep){
         pickAccount(tweet.id_str, tweet.user.screen_name);
       }
       else {
+        console.log(' - selling checkup');
         var spamFortnite = tweet.text.toLowerCase().indexOf('fortnite');
         var spamMethod = tweet.text.toLowerCase().indexOf('method');
         if (spamFortnite == -1 || spamMethod == -1) {
@@ -95,6 +96,7 @@ var derpCheckFriendship = function(tweet, reply, tweep){
 
 var pickAccount = function(idStr, screenName) {
   var randy = Math.random();
+  console.log(' - random chance');
   if (randy < process.env.RATE) {
     retweetById(idStr, screenName, twit);
   }/**
