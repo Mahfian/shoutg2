@@ -67,8 +67,7 @@ var derpCheckFriendship = function(tweet, reply, tweep){
       else {
         console.log(' - selling checkup');
         var spamFortnite = tweet.text.toLowerCase().indexOf('fortnite');
-        var spamMethod = tweet.text.toLowerCase().indexOf('method');
-        if (spamFortnite == -1 || spamMethod == -1) {
+        if (spamFortnite == -1) {
           pickAccount(tweet.id_str, tweet.user.screen_name);
         }
         else {
