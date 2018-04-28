@@ -59,7 +59,21 @@ userStream.on('tweet', function(tweet) {
 
 var derpCheckFriendship = function(tweet, reply, tweep){
 	if (tweet.in_reply_to_user_id == null) {
-    if (reply.relationship.target.following == true){/**
+    if (reply.relationship.target.following == true){
+      var spamSelling = tweet.text.indexOf('selling');
+      if (spamSelling == -1) {
+        pickAccount(tweet.id_str, tweet.user.screen_name);
+      }
+      else {
+        var spamAccount = tweet.text.indexOf('fortnite');
+        if (spamAccount == -1) {
+          pickAccount(tweet.id_str, tweet.user.screen_name);
+        }
+        else {
+          console.log(' - fortnite selling NOPE');
+        }
+      }
+    /**
         var randy = Math.random();
         if (randy < process.env.RATE) {
           retweetById(tweet.id_str, tweet.user.screen_name, twit);
@@ -68,7 +82,7 @@ var derpCheckFriendship = function(tweet, reply, tweep){
           retweetById(tweet.id_str, tweet.user.screen_name, twit2);
         }**/
         
-        pickAccount(tweet.id_str, tweet.user.screen_name);
+        
     }
     else if(reply.relationship.target.following == false)
       {console.log(' - nope. user does not follow');} 
