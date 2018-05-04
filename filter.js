@@ -28,7 +28,6 @@ if (process.env.REDISCLOUD_URL) {
 
 var REDIS_KEY = 'screenNameCooldown';
 var REDIS_KEY2 = 'screenNameCooldown2';
-var REDIS_KEY_COOLDOWN_DM = 'cooldownDMs';
 
 var userStream = twit.stream('user', { with: 'user', replies: 'all' });
 
@@ -80,13 +79,11 @@ var pickAccount = function(idStr, screenName) {
   var randy = Math.random();
   console.log(' - random chance');
   if (randy < process.env.RATE) {
-    retweetById(idStr, screenName, twit);
+    retweetById(idStr, screenName);
   }
 };
 
-var retweetById = function(idStr, screenName, account) {
-  
-    if (account == twit) {
+var retweetById = function(idStr, screenName) {
       client.sadd(REDIS_KEY, screenName, function(err, reply) {
         if (err) {
             console.log(err);
@@ -100,8 +97,10 @@ var retweetById = function(idStr, screenName, account) {
                       
         }
       });
-    }
 };
+
+client.del(REDIS_KEY);
+console.log("database 1 cleared");
 
 setInterval(function() {
     client.del(REDIS_KEY);
