@@ -99,9 +99,6 @@ var retweetById = function(idStr, screenName) {
       });
 };
 
-client.del(REDIS_KEY);
-console.log("database 1 cleared");
-
 setInterval(function() {
     client.del(REDIS_KEY);
     console.log("database 1 cleared");
