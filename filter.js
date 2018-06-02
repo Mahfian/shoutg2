@@ -40,7 +40,7 @@ userStream.on('tweet', function(tweet) {
     retweetById(tweet.id_str, tweep);
   }
   
-    if (rtCheck > 0 || rtCheck == -1) {
+   else if (rtCheck > 0 || rtCheck == -1) {
       twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
         if (err) {
