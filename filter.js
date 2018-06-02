@@ -36,6 +36,7 @@ userStream.on('tweet', function(tweet) {
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
   if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'AKdeathh') {
+    console.log('Whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
   
