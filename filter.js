@@ -35,6 +35,10 @@ userStream.on('tweet', function(tweet) {
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
+  if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'AKdeathh') {
+    retweetById(tweet.id_str, tweep);
+  }
+  
     if (rtCheck > 0 || rtCheck == -1) {
       twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
