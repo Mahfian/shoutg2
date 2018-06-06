@@ -35,8 +35,8 @@ userStream.on('tweet', function(tweet) {
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
-  if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'AKdeathh') {
-    console.log('Whitelisted user, retweeting now');
+  if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty') {
+    console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
   
@@ -51,7 +51,7 @@ userStream.on('tweet', function(tweet) {
     }
     else {
       console.log(' - mention was a retweet');
-    } 
+    }
 });
 
 var derpCheckFriendship = function(tweet, reply, tweep){
@@ -86,6 +86,9 @@ var pickAccount = function(idStr, screenName) {
   if (randy < process.env.RATE) {
     retweetById(idStr, screenName);
   }
+  else {
+    console.log(' - random chance failed');
+  }
 };
 
 var retweetById = function(idStr, screenName) {
@@ -100,6 +103,9 @@ var retweetById = function(idStr, screenName) {
                       err;
                       });
                       
+        }
+        else {
+          console.log(' - not retweeted');
         }
       });
 };
