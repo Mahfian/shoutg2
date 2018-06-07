@@ -28,7 +28,7 @@ if (process.env.REDISCLOUD_URL) {
 
 var REDIS_KEY = 'screenNameCooldown';
 var REDIS_KEY2 = 'screenNameCooldown2';
-
+/*
 var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 
 tweetStream.on('tweet', function(tweet) {
@@ -53,6 +53,44 @@ tweetStream.on('tweet', function(tweet) {
       console.log(' - mention was a retweet');
     }
 });
+*/
+//
+
+
+//find a tweet to retweet
+function findTweet(){
+  console.log('retweeting something');
+  twit.get('search/tweets', {q: '@ShoutGamers', count: 5, result_type: 'recent'}, function(err, reply){
+    if (err){
+      console.log(err);
+    }
+    retweet(reply.statuses[0]);
+  });
+}
+
+//accepts a tweet json object
+var retweet = function(tweet){
+  var tweep = tweet.user.screen_name;
+  var rtCheck = tweet.text.indexOf('RT');
+  if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty') {
+    console.log(' - whitelisted user, retweeting now');
+    retweetById(tweet.id_str, tweep);
+  }
+  
+   else if (rtCheck > 0 || rtCheck == -1) {
+      twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
+        console.log(' - looking up user: ' + tweet.user.screen_name);
+        if (err) {
+          console.log(err);
+        }
+        derpCheckFriendship(tweet, reply, tweep);
+      });
+    }
+    else {
+      console.log(' - tweet was a retweet');
+    }
+};
+
 
 var derpCheckFriendship = function(tweet, reply, tweep){
 	if (tweet.in_reply_to_user_id == null) {
@@ -110,6 +148,7 @@ var retweetById = function(idStr, screenName) {
       });
 };
 
+client.del(REDIS_KEY);
 setInterval(function() {
     client.del(REDIS_KEY);
     console.log("database 1 cleared");
@@ -124,3 +163,6 @@ var http = require("http");
 setInterval(function() {
     http.get("http://shoutg.herokuapp.com");
 }, 600000);
+
+findTweet();
+setInterval(function() {findTweet()}, 300000);
