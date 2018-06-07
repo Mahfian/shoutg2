@@ -28,34 +28,17 @@ if (process.env.REDISCLOUD_URL) {
 
 var REDIS_KEY = 'screenNameCooldown';
 var REDIS_KEY2 = 'screenNameCooldown2';
-/*
-var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 
+var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 tweetStream.on('tweet', function(tweet) {
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
-  if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty') {
+  if ((tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty') && (rtCheck > 0 || rtCheck == -1)) {
     console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
-  
-   else if (rtCheck > 0 || rtCheck == -1) {
-      twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
-        console.log(' - looking up user: ' + tweet.user.screen_name);
-        if (err) {
-          console.log(err);
-        }
-        derpCheckFriendship(tweet, reply, tweep);
-      });
-    }
-    else {
-      console.log(' - mention was a retweet');
-    }
 });
-*/
-//
-
 
 //find a tweet to retweet
 function findTweet(){
@@ -88,6 +71,7 @@ var retweet = function(tweet){
     }
     else {
       console.log(' - tweet was a retweet');
+      findTweet();
     }
 };
 
@@ -97,36 +81,28 @@ var derpCheckFriendship = function(tweet, reply, tweep){
     if (reply.relationship.target.following == true){
       var spamSelling = tweet.text.toLowerCase().indexOf('selling');
       if (spamSelling == -1) {
-        pickAccount(tweet.id_str, tweet.user.screen_name);
+        retweetById(tweet.id_str, tweet.user.screen_name);
       }
       else {
         console.log(' - selling checkup');
         var spamFortnite = tweet.text.toLowerCase().indexOf('fortnite');
         if (spamFortnite == -1) {
-          pickAccount(tweet.id_str, tweet.user.screen_name);
+          retweetById(tweet.id_str, tweet.user.screen_name);
         }
         else {
           console.log(' - fortnite/method selling NOPE');
+          findTweet();
         }
       }
     }
     else if(reply.relationship.target.following == false)
-      {console.log(' - nope. user does not follow');} 
+      {console.log(' - nope. user does not follow');}
+      findTweet();
 	  }
 	else {
 	  console.log(' - tweet was a reply');
+	  findTweet();
 	}
-};
-
-var pickAccount = function(idStr, screenName) {
-  var randy = Math.random();
-  console.log(' - random chance');
-  if (randy < process.env.RATE) {
-    retweetById(idStr, screenName);
-  }
-  else {
-    console.log(' - random chance failed');
-  }
 };
 
 var retweetById = function(idStr, screenName) {
@@ -165,4 +141,4 @@ setInterval(function() {
 }, 600000);
 
 findTweet();
-setInterval(function() {findTweet()}, 300000);
+setInterval(function(){findTweet()}, 300000);
