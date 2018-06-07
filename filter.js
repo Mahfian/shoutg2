@@ -29,9 +29,9 @@ if (process.env.REDISCLOUD_URL) {
 var REDIS_KEY = 'screenNameCooldown';
 var REDIS_KEY2 = 'screenNameCooldown2';
 
-var userStream = twit.stream('user', { with: 'user', replies: 'all' });
+var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 
-userStream.on('tweet', function(tweet) {
+tweetStream.on('tweet', function(tweet) {
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
