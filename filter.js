@@ -40,7 +40,7 @@ tweetStream.on('tweet', function(tweet) {
   }
   if (rtCheck > 0 || rtCheck == -1) {
     var r = Math.random();
-    if (r < .20) {
+    if (r < process.env.RATE) {
         twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
         if (err) {
@@ -59,6 +59,10 @@ var derpCheckFriendship = function(tweet, reply, tweep){
 	if (tweet.in_reply_to_user_id == null) {
     if (reply.relationship.target.following == true){
       var spamSelling = tweet.text.toLowerCase().indexOf('selling');
+      var spamTrain = tweet.text.toLowerCase().indexOf('train');
+      if (spamTrain != -1){
+        console.log(' - train NOPE');
+      }
       if (spamSelling == -1) {
         retweetById(tweet.id_str, tweet.user.screen_name);
       }
@@ -103,12 +107,12 @@ var retweetById = function(idStr, screenName) {
 setInterval(function() {
     client.del(REDIS_KEY);
     console.log("database 1 cleared");
-}, (60 * 1000 * process.env.COOLDOWN1));
+}, (60 * 60* 1000 * process.env.COOLDOWN1)); //time in hours
 
 setInterval(function() {
     client.del(REDIS_KEY2);
     console.log("database 2 cleared");
-}, (60 * 1000 * process.env.COOLDOWN2));
+}, (60 * 60 * 1000 * process.env.COOLDOWN2)); //time in hours
 
 var http = require("http");
 setInterval(function() {
