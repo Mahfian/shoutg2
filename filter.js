@@ -43,11 +43,12 @@ tweetStream.on('tweet', function(tweet) {
 //find a tweet to retweet
 function findTweet(){
   console.log('retweeting something');
-  twit.get('search/tweets', {q: '@ShoutGamers', count: 15, result_type: 'recent'}, function(err, reply){
+  twit.get('search/tweets', {q: '@ShoutGamers', count: 100, result_type: 'recent'}, function(err, reply){
     if (err){
       console.log(err);
     }
-    retweet(reply.statuses[0]);
+    var r = Math.floor((Math.random() * 100) + 1);
+    retweet(reply.statuses[r]);
   });
 }
 
