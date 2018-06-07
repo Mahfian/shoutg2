@@ -43,7 +43,7 @@ tweetStream.on('tweet', function(tweet) {
 //find a tweet to retweet
 function findTweet(){
   console.log('retweeting something');
-  twit.get('search/tweets', {q: '@ShoutGamers', count: 5, result_type: 'recent'}, function(err, reply){
+  twit.get('search/tweets', {q: '@ShoutGamers', count: 15, result_type: 'recent'}, function(err, reply){
     if (err){
       console.log(err);
     }
@@ -55,12 +55,8 @@ function findTweet(){
 var retweet = function(tweet){
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
-  if (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty') {
-    console.log(' - whitelisted user, retweeting now');
-    retweetById(tweet.id_str, tweep);
-  }
-  
-   else if (rtCheck > 0 || rtCheck == -1) {
+  console.log(tweet.text);
+   if (rtCheck > 0 || rtCheck == -1) {
       twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
         if (err) {
@@ -124,7 +120,6 @@ var retweetById = function(idStr, screenName) {
       });
 };
 
-client.del(REDIS_KEY);
 setInterval(function() {
     client.del(REDIS_KEY);
     console.log("database 1 cleared");
