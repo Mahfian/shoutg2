@@ -38,27 +38,10 @@ tweetStream.on('tweet', function(tweet) {
     console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
-});
-
-//find a tweet to retweet
-function findTweet(){
-  console.log('retweeting something');
-  twit.get('search/tweets', {q: '@ShoutGamers', count: 100, result_type: 'recent'}, function(err, reply){
-    if (err){
-      console.log(err);
-    }
-    var r = Math.floor((Math.random() * 100) + 1);
-    retweet(reply.statuses[r]);
-  });
-}
-
-//accepts a tweet json object
-var retweet = function(tweet){
-  var tweep = tweet.user.screen_name;
-  var rtCheck = tweet.text.indexOf('RT');
-  console.log(tweet.text);
-   if (rtCheck > 0 || rtCheck == -1) {
-      twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
+  if (rtCheck > 0 || rtCheck == -1) {
+    var r = Math.random();
+    if (r < .20) {
+        twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
         if (err) {
           console.log(err);
@@ -66,12 +49,11 @@ var retweet = function(tweet){
         derpCheckFriendship(tweet, reply, tweep);
       });
     }
-    else {
-      console.log(' - tweet was a retweet');
-      findTweet();
-    }
-};
-
+  }
+  else {
+    console.log(' - tweet was a retweet');
+  }
+});
 
 var derpCheckFriendship = function(tweet, reply, tweep){
 	if (tweet.in_reply_to_user_id == null) {
@@ -88,17 +70,14 @@ var derpCheckFriendship = function(tweet, reply, tweep){
         }
         else {
           console.log(' - fortnite/method selling NOPE');
-          findTweet();
         }
       }
     }
     else if(reply.relationship.target.following == false)
       {console.log(' - nope. user does not follow');}
-      findTweet();
 	  }
 	else {
 	  console.log(' - tweet was a reply');
-	  findTweet();
 	}
 };
 
@@ -133,8 +112,5 @@ setInterval(function() {
 
 var http = require("http");
 setInterval(function() {
-    http.get("http://shoutg.herokuapp.com");
+    http.get("http://shoutg2.herokuapp.com");
 }, 600000);
-
-findTweet();
-setInterval(function(){findTweet()}, 300000);
