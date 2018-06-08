@@ -27,14 +27,13 @@ if (process.env.REDISCLOUD_URL) {
 }
 
 var REDIS_KEY = 'screenNameCooldown';
-var REDIS_KEY2 = 'screenNameCooldown2';
 
 var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 tweetStream.on('tweet', function(tweet) {
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
-  if ((tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty') && (rtCheck > 0 || rtCheck == -1)) {
+  if ((tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin') && (rtCheck > 0 || rtCheck == -1)) {
     console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
@@ -108,11 +107,6 @@ setInterval(function() {
     client.del(REDIS_KEY);
     console.log("database 1 cleared");
 }, (60 * 60* 1000 * process.env.COOLDOWN1)); //time in hours
-
-setInterval(function() {
-    client.del(REDIS_KEY2);
-    console.log("database 2 cleared");
-}, (60 * 60 * 1000 * process.env.COOLDOWN2)); //time in hours
 
 var http = require("http");
 setInterval(function() {
