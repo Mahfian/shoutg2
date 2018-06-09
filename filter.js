@@ -76,7 +76,7 @@ tweetStream.on('tweet', function(tweet) {
       });
     }
     else {
-      console.log('tweetCount: ' + tweetCount);
+      console.log(' - tweetCount: ' + tweetCount);
     }
     
   }
