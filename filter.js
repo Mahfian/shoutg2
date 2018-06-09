@@ -28,61 +28,55 @@ if (process.env.REDISCLOUD_URL) {
 
 var REDIS_KEY = 'screenNameCooldown';
 
+var tweetCount = 0;
+
 var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 tweetStream.on('tweet', function(tweet) {
+  tweetCount +=1;
+  
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
   var rtCheck = tweet.text.indexOf('RT');
-  if ((tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin') && (rtCheck > 0 || rtCheck == -1)) {
+  var spamSelling = tweet.text.toLowerCase().indexOf('selling');
+  var spamTrain = tweet.text.toLowerCase().indexOf('train');
+  
+  //whitelisted user
+  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin')) {
     console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
-  if (rtCheck > 0 || rtCheck == -1) {
-    var r = Math.random();
-    if (r < process.env.RATE) {
-        twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
+  
+  //tweet count over TWEET_COUNT
+  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (spamTrain == -1) && (tweetCount >= process.env.TWEET_COUNT)) {
+    
+      twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
-        if (err) {
-          console.log(err);
-        }
-        derpCheckFriendship(tweet, reply, tweep);
+        err;
+        
+        if (reply.relationship.target.following == true){
+          
+          if (spamSelling == -1) {
+            retweetById(tweet.id_str, tweet.user.screen_name);
+          }
+          
+          else {
+            console.log(' - selling checkup');
+            var spamFortnite = tweet.text.toLowerCase().indexOf('fortnite');
+            
+            if (spamFortnite == -1) {
+              retweetById(tweet.id_str, tweet.user.screen_name);
+            }
+            else {
+              console.log(' - fortnite/method selling NOPE');
+            }}}
+        else if(reply.relationship.target.following == false)
+          {console.log(' - nope. user does not follow');}
       });
-    }
   }
   else {
-    console.log(' - tweet was a retweet');
+    console.log(' - Retweet or ' + tweetCount);
   }
 });
-
-var derpCheckFriendship = function(tweet, reply, tweep){
-	if (tweet.in_reply_to_user_id == null) {
-    if (reply.relationship.target.following == true){
-      var spamSelling = tweet.text.toLowerCase().indexOf('selling');
-      var spamTrain = tweet.text.toLowerCase().indexOf('train');
-      if (spamTrain != -1){
-        console.log(' - train NOPE');
-      }
-      if (spamSelling == -1) {
-        retweetById(tweet.id_str, tweet.user.screen_name);
-      }
-      else {
-        console.log(' - selling checkup');
-        var spamFortnite = tweet.text.toLowerCase().indexOf('fortnite');
-        if (spamFortnite == -1) {
-          retweetById(tweet.id_str, tweet.user.screen_name);
-        }
-        else {
-          console.log(' - fortnite/method selling NOPE');
-        }
-      }
-    }
-    else if(reply.relationship.target.following == false)
-      {console.log(' - nope. user does not follow');}
-	  }
-	else {
-	  console.log(' - tweet was a reply');
-	}
-};
 
 var retweetById = function(idStr, screenName) {
       client.sadd(REDIS_KEY, screenName, function(err, reply) {
@@ -91,10 +85,10 @@ var retweetById = function(idStr, screenName) {
         } else if (reply == 1 || screenName == process.env.TWITTER_DEBUG_USER) {
             console.log(' - This is a new user OR it is the debug user');
                       
-                      twit.post('statuses/retweet/:id', {id: idStr}, function(err, reply) {
-                      console.log("1 retweeted id:" + idStr);
-                      err;
-                      });
+                twit.post('statuses/retweet/:id', {id: idStr}, function(err, reply) {
+                console.log("1 retweeted id:" + idStr);
+                err;
+                });
                       
         }
         else {
