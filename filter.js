@@ -32,7 +32,6 @@ var tweetCount = 0;
 
 var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
 tweetStream.on('tweet', function(tweet) {
-  tweetCount +=1;
   
   console.log('Possible mention: ' + tweet.user.screen_name);
   var tweep = tweet.user.screen_name;
@@ -47,8 +46,11 @@ tweetStream.on('tweet', function(tweet) {
   }
   
   //tweet count over TWEET_COUNT
-  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (spamTrain == -1) && (tweetCount >= process.env.TWEET_COUNT)) {
+  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (spamTrain == -1)) {
+    tweetCount +=1;
     
+    if (tweetCount >= process.env.TWEET_COUNT) {
+      tweetCount = 0;
       twit.get('friendships/show', {source_screen_name: process.env.USERNAME, target_screen_name: tweet.user.screen_name}, function(err, reply) {
         console.log(' - looking up user: ' + tweet.user.screen_name);
         err;
@@ -72,6 +74,8 @@ tweetStream.on('tweet', function(tweet) {
         else if(reply.relationship.target.following == false)
           {console.log(' - nope. user does not follow');}
       });
+    }
+    
   }
   else {
     console.log(' - Retweet or ' + tweetCount);
