@@ -75,10 +75,13 @@ tweetStream.on('tweet', function(tweet) {
           {console.log(' - nope. user does not follow');}
       });
     }
+    else {
+      console.log('tweetCount: ' + tweetCount);
+    }
     
   }
   else {
-    console.log(' - Retweet or ' + tweetCount);
+    console.log(' - Retweet/reply/train');
   }
 });
 
