@@ -30,7 +30,7 @@ var REDIS_KEY = 'screenNameCooldown';
 
 var tweetCount = 0;
 
-var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers' });
+var tweetStream = twit.stream('statuses/filter', { track: '@ShoutGamers, @ShoutRTs' });
 tweetStream.on('tweet', function(tweet) {
   
   console.log('Possible mention: ' + tweet.user.screen_name);
@@ -40,7 +40,7 @@ tweetStream.on('tweet', function(tweet) {
   var spamTrain = tweet.text.toLowerCase().indexOf('train');
   
   //whitelisted user
-  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (tweep == 'Captainslays' || tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin' || tweep == 'FaKiee_US')) {
+  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin' || tweep == 'FaKiee_US')) {
     console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
