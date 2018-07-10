@@ -39,6 +39,7 @@ tweetStream.on('tweet', function(tweet) {
   var spamSelling = tweet.text.toLowerCase().indexOf('selling');
   var spamTrain = tweet.text.toLowerCase().indexOf('train');
   var spamPeriscope = tweet.text.toLowerCase().indexOf('#periscope');
+  var spamAccount = tweet.text.toLowerCase().indexOf('account');
   
   //whitelisted user
   if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin' || tweep == 'FaKiee_US' || tweep == 'TWinGSo_')) {
@@ -47,7 +48,7 @@ tweetStream.on('tweet', function(tweet) {
   }
   
   //tweet count over TWEET_COUNT
-  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (spamTrain == -1) && (spamPeriscope == -1)) {
+  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (spamTrain == -1) && (spamPeriscope == -1) && (spamAccount == -1)) {
     tweetCount +=1;
     
     if (tweetCount >= process.env.TWEET_COUNT) {
