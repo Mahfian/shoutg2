@@ -38,10 +38,10 @@ tweetStream.on('tweet', function(tweet) {
   var rtCheck = tweet.text.indexOf('RT');
   var spamSelling = tweet.text.toLowerCase().indexOf('selling');
   var spamTrain = tweet.text.toLowerCase().indexOf('train');
-  var spamPeriscope = tweet.text.toLowerCase().indexOf('#Periscope');
+  var spamPeriscope = tweet.text.toLowerCase().indexOf('#periscope');
   
   //whitelisted user
-  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin' || tweep == 'FaKiee_US')) {
+  if ((rtCheck > 0 || rtCheck == -1) && (tweet.in_reply_to_user_id == null) && (tweep == 'F_for_FeLoN' || tweep == 'ebookeroo' || tweep == 'ReaIDirty' || tweep == 'buttchinnychin' || tweep == 'FaKiee_US' || tweep == 'TWinGSo_')) {
     console.log(' - whitelisted user, retweeting now');
     retweetById(tweet.id_str, tweep);
   }
