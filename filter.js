@@ -38,7 +38,7 @@ tweetStream.on('tweet', function(tweet) {
   var rtCheck = tweet.text.indexOf('RT');
   var spamSelling = tweet.text.toLowerCase().indexOf('selling');
   var spamTrain = tweet.text.toLowerCase().indexOf('train');
-  var spamPeriscope = tweet.text.toLowerCase().indexOf('#periscope');
+  var spamPeriscope = tweet.text.toLowerCase().indexOf('periscope');
   var spamAccount = tweet.text.toLowerCase().indexOf('account');
   
   //whitelisted user
